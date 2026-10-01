@@ -1,0 +1,2 @@
+# Installed by the HA Lite add-on: start the memory-caps daemon once the data partition is up.
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_FS_LABEL}=="hassos-data", RUN+="/usr/bin/systemd-run --no-block --unit=haos-caps /bin/sh -c 'i=0; while [ $$i -lt 120 ]; do [ -f /mnt/data/haos-caps/haos-caps.sh ] && docker info >/dev/null 2>&1 && exec /bin/sh /mnt/data/haos-caps/haos-caps.sh run; sleep 5; i=$$((i+1)); done'"

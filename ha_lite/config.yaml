@@ -1,0 +1,45 @@
+name: HA Lite
+version: "0.1.0"
+slug: ha_lite
+description: >-
+  Experimental. Swaps in lower-memory builds of Home Assistant Core, Supervisor and the Node add-ons
+  (Zigbee2MQTT, Z-Wave JS UI, Matter Server), sets soft memory caps, then exits.
+url: https://github.com/rafaelborja/ha-lite
+arch:
+  - aarch64
+init: false
+startup: once
+boot: manual
+stage: experimental
+hassio_api: true
+hassio_role: manager
+homeassistant_api: true
+docker_api: true
+options:
+  core: true
+  supervisor: true
+  zigbee2mqtt: true
+  zwave_js_ui: true
+  matter_server: true
+  memory_caps: true
+  cap_core_mb: 500
+  cap_zigbee2mqtt_mb: 70
+  cap_zwave_js_ui_mb: 78
+  cap_matter_server_mb: 80
+  restart_after_watchdog_failure: true
+  revert_all: false
+  dry_run: true
+schema:
+  core: bool
+  supervisor: bool
+  zigbee2mqtt: bool
+  zwave_js_ui: bool
+  matter_server: bool
+  memory_caps: bool
+  cap_core_mb: int(300,2000)
+  cap_zigbee2mqtt_mb: int(40,1000)
+  cap_zwave_js_ui_mb: int(40,1000)
+  cap_matter_server_mb: int(40,1000)
+  restart_after_watchdog_failure: bool
+  revert_all: bool
+  dry_run: bool
