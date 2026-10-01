@@ -1,8 +1,31 @@
 {
-  "_meta": {"release": "v0.1.0", "note": "lite = image pinned by digest; TBD = not published yet (that part is skipped)"},
-  "core":          {"official": "ghcr.io/home-assistant/{machine}-homeassistant", "version": "2026.9.3", "lite": "TBD"},
-  "supervisor":    {"official": "ghcr.io/home-assistant/aarch64-hassio-supervisor", "version": "2026.09.2", "lite": "TBD"},
-  "zigbee2mqtt":   {"official": "ghcr.io/zigbee2mqtt/zigbee2mqtt-aarch64", "version": "2.14.1-1", "lite": "TBD"},
-  "zwave_js_ui":   {"official": "ghcr.io/hassio-addons/zwave-js-ui", "version": "7.7.0", "lite": "TBD"},
-  "matter_server": {"official": "homeassistant/aarch64-addon-matter-server", "version": "9.2.0", "lite": "TBD"}
+  "_meta": {
+    "release": "v0.1.0",
+    "note": "lite = image pinned by digest; TBD = not published yet (that part is skipped)"
+  },
+  "core": {
+    "official": "ghcr.io/home-assistant/{machine}-homeassistant",
+    "version": "2026.9.3",
+    "lite": "TBD"
+  },
+  "supervisor": {
+    "official": "ghcr.io/home-assistant/aarch64-hassio-supervisor",
+    "version": "2026.09.2",
+    "lite": "TBD"
+  },
+  "zigbee2mqtt": {
+    "official": "ghcr.io/zigbee2mqtt/zigbee2mqtt-aarch64",
+    "version": "2.14.1-1",
+    "lite": "ghcr.io/rafaelborja/ha-lite-z2m@sha256:bd8d628d4b652fa26485bfb31b4f323fb2f3ede245eb3fbc9c9b08b834b2d770"
+  },
+  "zwave_js_ui": {
+    "official": "ghcr.io/hassio-addons/zwave-js-ui",
+    "version": "7.7.0",
+    "lite": "ghcr.io/rafaelborja/ha-lite-zwjsui@sha256:b567e7557131972bf3faf79d700138be0c0065da3545678940a2b398b8e424d2"
+  },
+  "matter_server": {
+    "official": "homeassistant/aarch64-addon-matter-server",
+    "version": "9.2.0",
+    "lite": "ghcr.io/rafaelborja/ha-lite-matter@sha256:6eede18afca0213ff9b1475232179e0040da4aba77e83b87385e3ba78b02b239"
+  }
 }
