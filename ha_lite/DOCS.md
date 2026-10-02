@@ -22,6 +22,10 @@ Every build is pinned by SHA-256 digest and built in public CI from the stock re
   `run.sh` before you trust it.
 - After **any** Core, Supervisor or add-on update the official image comes back: run HA Lite again. The
   Supervisor's auto-update is turned **off** (an update would silently undo HA Lite).
+- A Supervisor that is not on the latest version blocks the add-on store ("supervisor needs to be updated first").
+  When HA Lite pins the Supervisor it sets the Supervisor's own job option `ignore_conditions: [supervisor_updated]`
+  (same as `ha jobs options --ignore-conditions supervisor_updated`); `revert_all` removes it.
+- Each image download needs free space: HA Lite skips a part when the data disk has less than 2 GB free.
 
 ## Options
 `core`, `supervisor`, `zigbee2mqtt`, `zwave_js_ui`, `matter_server`: which parts to swap. `memory_caps` and the
