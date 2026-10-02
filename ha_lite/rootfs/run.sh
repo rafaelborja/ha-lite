@@ -1,4 +1,4 @@
-#!/usr/bin/env bashio
+#!/usr/bin/with-contenv bashio
 # HA Lite -- one-shot installer. Swaps verified lower-memory images in under the official tags (keeping the official
 # image as <tag>-orig), checks health and rolls back on failure, installs the host memory-caps daemon, then exits.
 # Run it again after any Core/add-on/Supervisor update: images without a matching HA Lite build are left alone.
