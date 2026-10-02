@@ -11,3 +11,6 @@
   blocks the add-on store); revert_all removes it.
 - Skips a part when the data disk has less than 2 GB free.
 - Clearer dry-run messages (says when the official image is already saved as -orig).
+
+## 0.1.3
+- Pin the Supervisor build (2026.09.2, Python 3.15 + lazy imports + dbus-fast 5.0.24, lazy on by default).
