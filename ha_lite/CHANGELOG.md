@@ -14,3 +14,6 @@
 
 ## 0.1.3
 - Pin the Supervisor build (2026.09.2, Python 3.15 + lazy imports + dbus-fast 5.0.24, lazy on by default).
+
+## 0.1.4
+- Pin the Core build (2026.9.3 on Python 3.15 with lazy imports on by default, generic filter, camera/recorder/Matter/holidays fixes).

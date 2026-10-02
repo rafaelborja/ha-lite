@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "release": "v0.1.3",
+    "release": "v0.1.4",
     "note": "lite = image pinned by digest; TBD = not published yet (that part is skipped)"
   },
   "core": {
     "official": "ghcr.io/home-assistant/{machine}-homeassistant",
     "version": "2026.9.3",
-    "lite": "TBD"
+    "lite": "ghcr.io/rafaelborja/ha-lite-core@sha256:31a55905ee690d4a47053d64fc1208ab1406e840cea9637d6e2e229295e3f9f0"
   },
   "supervisor": {
     "official": "ghcr.io/home-assistant/aarch64-hassio-supervisor",
