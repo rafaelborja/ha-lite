@@ -17,3 +17,9 @@
 
 ## 0.1.4
 - Pin the Core build (2026.9.3 on Python 3.15 with lazy imports on by default, generic filter, camera/recorder/Matter/holidays fixes).
+
+## 0.1.5
+- Fix: host helpers bypass the image s6 init (it must be PID 1 and it dropped the config variables), so the memory
+  caps install works and never writes an empty config.
+- Files on the host are replaced by rename (the running daemon reads its script while it runs); the old daemon is
+  stopped by exact command match before the new one starts.

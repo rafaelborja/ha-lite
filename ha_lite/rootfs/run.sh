@@ -16,11 +16,17 @@ opt(){ bashio::config "$1"; }
 SELF=$(docker ps -q | xargs docker inspect --format '{{.Config.Hostname}} {{.Config.Image}}' \
        | awk -v h="$(hostname)" '$1==h{print $2; exit}')
 [ -n "$SELF" ] || bashio::exit.nok "cannot find my own container image"
-host(){ docker run --rm --privileged --pid=host --net=host "$SELF" nsenter -t 1 -m -u -i -n -p -- sh -c "$1"; }
-to_host(){ # copy the host scripts + generated configs to /mnt/data/haos-caps
-  docker run --rm -v /mnt/data/haos-caps:/dst -e CAPS="$1" -e HEAL="$2" "$SELF" sh -c \
-    'cp /ha-lite/host/haos-caps.sh /ha-lite/host/99-haos-caps.rules /dst/ &&
-     printf "%s\n" "$CAPS" > /dst/haos-caps.conf && printf "%s\n" "$HEAL" > /dst/haos-heal.conf'; }
+# Helpers bypass the image's s6 /init (--entrypoint): s6 must be PID 1 (so it fails with --pid=host) and it drops
+# the -e variables before running the command.
+host(){ docker run --rm --privileged --pid=host --net=host --entrypoint nsenter "$SELF" -t 1 -m -u -i -n -p -- sh -c "$1"; }
+to_host(){ # copy the host scripts + generated configs to /mnt/data/haos-caps. New files go in by rename, never by
+  # rewriting in place (the running daemon's sh reads its script while it runs). Refuses an empty caps config.
+  [ -n "$1" ] || { warn "memory caps: empty config - not written"; return 1; }
+  docker run --rm --entrypoint sh -v /mnt/data/haos-caps:/dst -e CAPS="$1" -e HEAL="$2" "$SELF" -c \
+    'set -e; [ -n "$CAPS" ]
+     for f in haos-caps.sh 99-haos-caps.rules; do cp /ha-lite/host/$f /dst/$f.new && mv /dst/$f.new /dst/$f; done
+     printf "%s\n" "$CAPS" > /dst/haos-caps.conf.new && mv /dst/haos-caps.conf.new /dst/haos-caps.conf
+     printf "%s" "$HEAL" > /dst/haos-heal.conf.new && mv /dst/haos-heal.conf.new /dst/haos-heal.conf'; }
 
 img_id(){ docker image inspect --format '{{.Id}}' "$1" 2>/dev/null; }
 container_for(){ # $1 image repo -> running container name (app_* or addon_*) using it
@@ -138,7 +144,8 @@ $c $(opt cap_${k}_mb)"
   else
   to_host "$caps" "$heal"
   host 'cp /mnt/data/haos-caps/99-haos-caps.rules /etc/udev/rules.d/ &&
-        (sh /mnt/data/haos-caps/haos-caps.sh undo >/dev/null 2>&1; systemctl stop haos-caps 2>/dev/null; true) &&
+        (systemctl stop haos-caps 2>/dev/null; systemctl reset-failed haos-caps 2>/dev/null
+         for p in $(ps -o pid,args | awk "\$3==\"/mnt/data/haos-caps/haos-caps.sh\" && \$4==\"run\" {print \$1}"); do kill $p; done; true) &&
         systemd-run --no-block --unit=haos-caps /bin/sh /mnt/data/haos-caps/haos-caps.sh run' \
     && log "memory caps installed: $(echo "$caps" | tr '\n' ';')" || warn "memory caps: install failed"
   fi

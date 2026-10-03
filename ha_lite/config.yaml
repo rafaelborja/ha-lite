@@ -1,5 +1,5 @@
 name: HA Lite
-version: "0.1.4"
+version: "0.1.5"
 slug: ha_lite
 description: >-
   Experimental. Swaps in lower-memory builds of Home Assistant Core, Supervisor and the Node add-ons
